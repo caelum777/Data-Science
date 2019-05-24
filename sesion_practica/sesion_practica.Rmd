@@ -1,20 +1,58 @@
 ---
-title: "R Notebook"
+title: "R Notebook Practice"
 output:
   html_document:
     df_print: paged
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+#Ejercicio 1
 
 ```{r}
-plot(cars)
+x <- c(1,3,5)
+x
+dim(x)
+y <- as.matrix(x)
+y
+dim(y)
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+#Ejercicio 2
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+```{r}
+y <- seq(-3,3,0.5)
+#Genere el vector (1,4,7,10,13,16,19) usando el comando secuencia
+seq(1,19,3)
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+rep(1:3,3)
+
+z <- c(1,3,2,5)
+#Calcular length de z
+length(z)
+
+
+x <- c(-1,4,-3)
+y <- c(0,11,2)
+x+y
+sum(x)/length(x)
+x+z
+x*y
+```
+
+#Ejercicio 3
+
+```{r}
+x <- c(90,98,-10,22,-55,10,230)
+x[3]
+x[3:5]
+x[-1]
+x[-3]
+x[-c(2,3)]
+```
+
+```{python}
+x = [90,98,-10,22,-55,10,230]
+x[2]
+x[2:5]
+x[1:]
+x.pop(0)
+```
