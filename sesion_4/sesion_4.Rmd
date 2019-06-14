@@ -1,0 +1,70 @@
+---
+title: "sesion_4"
+output: html_document
+---
+
+
+``` {r}
+library(pracma)
+library(mosaic)
+library(MASS)
+```
+
+
+```{r}
+u <- c(2,4,-5)
+v <- c(-3,-2,1)
+cross(u, v)
+```
+
+Determine el area del triangulo con vertices $P=(5,4,5)$, $Q=(4,10,6)$ y $R=(1,8,7)$
+```{r}
+p <- c(5,4,5); q <- c(4,10,6); r <- c(1,8,7)
+pq <- q-p
+pr <- r-p
+pcruz <- as.matrix(pracma::cross(pq, pr))
+area <- norm(pcruz, type = "2") / 2
+area
+
+#Usando la funcion Norm del paquete pracma
+
+area2 <- Norm(pracma::cross(pq,pr))/2
+area2
+```
+
+# Proyecciones
+
+```{r}
+u <- c(2,3,1)
+v <- c(1,2,-6)  
+fractions(project(u,v))
+```
+
+# Ejercicio en cuaderno
+```{r}
+dnames = list(
+  c("escenario1", "escenario2", "escenario3"),
+  c("art1", "art2", "art3", "art4")
+)
+d <- matrix(c(30,20,40,10,25,32,38,7,33,20,45,5), nrow=3, ncol=4, byrow=TRUE, dimnames=dnames)
+pnames = list(
+  c("art1", "art2", "art3", "art4"),
+  c("precio1", "precio2", "precio3")
+)
+p <- matrix(c(20,18,25,15,17,15,18,16,20,40,38,33), nrow=4, ncol=3, byrow=TRUE, dimnames=pnames)
+d%*%p
+# Cual combinacion de escenario y precios es mejor y peor?s
+```
+
+Sistema de $m$ ecuaciones lineales con n incognitas
+Resolver:
+
+$2x+4y+6z=18$
+$4x+5y+6z=24$
+$3x+y-2z=4$
+
+```{r}
+s <- matrix(c(2,4,6,18,4,5,6,24,3,1,-2,4), nrow=3, ncol=4, byrow=TRUE)
+s
+rref(s)
+```
