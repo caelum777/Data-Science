@@ -1,0 +1,50 @@
+---
+title: "Sesion 6"
+output:
+  html_document:
+    df_print: paged
+---
+
+``` {r echo = FALSE, message = FALSE}
+library(pracma)
+library(mosaic)
+library(MASS)
+```
+
+## Resolver sistema de ecuaciones
+**Flujo de calles**
+
+```{r}
+sistema <- matrix(
+  c(1,0,0,0,0,1,0,1300,
+    1,-1,0,0,0,0,1,200,
+    0,1,0,0,-1,0,0,200,
+    0,0,0,-1,1,0,0,400,
+    0,0,1,-1,0,0,1,100,
+    0,0,1,0,0,1,0,600),
+  nrow = 6, ncol = 8, byrow = TRUE
+  )
+
+sistema
+rref(sistema)
+```
+
+**Vectores li o ld**
+
+```{r echo = FALSE, message = FALSE}
+library(Smisc)
+library(caret)
+```
+
+```{r}
+y <- matrix(
+  c(1,3,4,
+    2,6,8,
+    7,2,9,
+    4,1,7,
+    3.5,1,4.5), ncol = 3, nrow = 5, byrow = TRUE)
+
+y
+
+findDepMat(y)
+```
