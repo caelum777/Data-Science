@@ -1678,6 +1678,211 @@ sistema</code></pre>
 ## [4,]    0    0    0    1    0    1   -1  500
 ## [5,]    0    0    0    0    1    1   -1  900
 ## [6,]    0    0    0    0    0    0    0    0</code></pre>
+<p><strong>Vectores li o ld</strong></p>
+<pre class="r"><code>y &lt;- matrix(
+  c(1,3,4,
+    2,6,8,
+    7,2,9,
+    4,1,7,
+    3.5,1,4.5), ncol = 3, nrow = 5, byrow = TRUE)
+
+y</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]  1.0    3  4.0
+## [2,]  2.0    6  8.0
+## [3,]  7.0    2  9.0
+## [4,]  4.0    1  7.0
+## [5,]  3.5    1  4.5</code></pre>
+<pre class="r"><code># encontrar vectores ld en la martriz
+findDepMat(y)</code></pre>
+<pre><code>## [1] FALSE  TRUE FALSE FALSE  TRUE</code></pre>
+</div>
+<div id="ej2---como-saber-si-los-vectores-de-una-matriz-son-li-o-ld" class="section level2">
+<h2>Ej2 - Como saber si los vectores de una matriz son li o ld</h2>
+<pre class="r"><code>m  &lt;- matrix(c(1,2,0,-2,-2,1,3,0,7), nrow = 3, ncol = 3, byrow = TRUE)
+# Calcular cuantas columnas son li, calula por columnas
+pracma::Rank(m)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>#Otra forma, calculando el determinante, si es diferente de cero las columnas son li
+det(m)</code></pre>
+<pre><code>## [1] 20</code></pre>
+<pre class="r"><code># Otra forma, haciendo la solucion del sistema
+rref(m)</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    0    0
+## [2,]    0    1    0
+## [3,]    0    0    1</code></pre>
+</div>
+<div id="ej3-verifique-si-los-vectores" class="section level2">
+<h2>Ej3 Verifique si los vectores:</h2>
+<p><span class="math display">\[m=\left(\begin{array}{cc} 
+1\\
+3\\
+11
+\end{array}\right)\]</span></p>
+<p><span class="math display">\[m=\left(\begin{array}{cc} 
+-3\\
+0\\
+-6
+\end{array}\right)\]</span></p>
+<p><span class="math display">\[m=\left(\begin{array}{cc} 
+0\\
+4\\
+12
+\end{array}\right)\]</span></p>
+<p>Son li o ld</p>
+<pre class="r"><code>m &lt;- matrix(c(1,-3,0,3,0,4,11,-6,12), nrow = 3, ncol = 3, byrow = TRUE)
+pracma::Rank(m)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>det(m)</code></pre>
+<pre><code>## [1] -8.992806e-15</code></pre>
+<pre class="r"><code>rref(m)</code></pre>
+<pre><code>##      [,1] [,2]      [,3]
+## [1,]    1    0 1.3333333
+## [2,]    0    1 0.4444444
+## [3,]    0    0 0.0000000</code></pre>
+<pre class="r"><code># Si retorna una lista y una sugerencia para remover, es ld
+findLinearCombos(m)</code></pre>
+<pre><code>## $linearCombos
+## $linearCombos[[1]]
+## [1] 3 1 2
+## 
+## 
+## $remove
+## [1] 3</code></pre>
+<p>Es ld</p>
+</div>
+<div id="ej4" class="section level2">
+<h2>Ej4</h2>
+<pre class="r"><code>m &lt;- matrix(c(1,2,2,5,4,-3), 3, 2, TRUE)
+m</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    2
+## [2,]    2    5
+## [3,]    4   -3</code></pre>
+<pre class="r"><code>Rank(m)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<p>Es li</p>
+</div>
+<div id="valores-y-vectores-propios" class="section level2">
+<h2>Valores y vectores propios</h2>
+<pre class="r"><code>A &lt;- matrix(c(10,-18,6,-11), 2, 2, TRUE)
+v1 &lt;- matrix(c(2,1), 2, 1, TRUE)
+v2 &lt;- matrix(c(3,2), 2, 1, TRUE)
+e1 &lt;- 1
+e2 &lt;- -2
+
+a &lt;- A%*%v1
+a</code></pre>
+<pre><code>##      [,1]
+## [1,]    2
+## [2,]    1</code></pre>
+<pre class="r"><code># Es igual a
+b &lt;- e1*v1
+b</code></pre>
+<pre><code>##      [,1]
+## [1,]    2
+## [2,]    1</code></pre>
+<pre class="r"><code>all.equal(a,b)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>c &lt;- A%*%v2
+c</code></pre>
+<pre><code>##      [,1]
+## [1,]   -6
+## [2,]   -4</code></pre>
+<pre class="r"><code>#Es igual a 
+d &lt;- e2*v2
+d</code></pre>
+<pre><code>##      [,1]
+## [1,]   -6
+## [2,]   -4</code></pre>
+<pre class="r"><code>all.equal(c,d)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>#Encontrar valores propios y vectores propios (autovalores, o valores caracteristicos)
+eig(A) #vector de valores propios del paquete pragma</code></pre>
+<pre><code>## [1] -2  1</code></pre>
+<pre class="r"><code>values &lt;- eigen(A)
+fractions(values$vectors)#</code></pre>
+<pre><code>##      [,1]          [,2]         
+## [1,] 134996/162245 832040/930249
+## [2,]  92159/166142 416020/930249</code></pre>
+</div>
+<div id="ej-calcule-los-valores-propios-de" class="section level2">
+<h2>Ej calcule los valores propios de</h2>
+<p><span class="math display">\[A_{1}=\left(\begin{array}{cc} 
+2 &amp; 5 &amp; 6\\
+0 &amp; -3 &amp; 2\\
+0 &amp; 0 &amp; 5
+\end{array}\right)\]</span></p>
+<pre class="r"><code>A1 = matrix(c(2,5,6,0,-3,2,0,0,5), 3, 3, TRUE)
+eigen(A1)</code></pre>
+<pre><code>## eigen() decomposition
+## $values
+## [1]  5 -3  2
+## 
+## $vectors
+##            [,1]       [,2] [,3]
+## [1,] 0.91982415 -0.7071068    1
+## [2,] 0.09515422  0.7071068    0
+## [3,] 0.38061689  0.0000000    0</code></pre>
+<p>Los valores propios de una matriz triangular, es su diagonal</p>
+</div>
+<div id="ej2-calcule-los-valores-propios-de" class="section level2">
+<h2>Ej2 calcule los valores propios de</h2>
+<p><span class="math display">\[A_{2}=\left(\begin{array}{cc} 
+1 &amp; -1 &amp; 4\\
+3 &amp; -2 &amp; -1\\
+2 &amp; 1 &amp; 1
+\end{array}\right)\]</span></p>
+<pre class="r"><code>A2 &lt;- matrix(c(1,-1,4,3,2,-1,2,1,-1), 3, 3, TRUE)
+eigen(A2)</code></pre>
+<pre><code>## eigen() decomposition
+## $values
+## [1]  3 -2  1
+## 
+## $vectors
+##           [,1]       [,2]       [,3]
+## [1,] 0.4082483  0.5773503  0.2357023
+## [2,] 0.8164966 -0.5773503 -0.9428090
+## [3,] 0.4082483 -0.5773503 -0.2357023</code></pre>
+</div>
+<div id="sean" class="section level2">
+<h2>Sean</h2>
+<p><span class="math display">\[V_{1}=\left(\begin{array}{cc} 
+-1\\
+4\\
+1
+\end{array}\right)\]</span></p>
+<p><span class="math display">\[V_{2}=\left(\begin{array}{cc} 
+1\\
+-1\\
+-1
+\end{array}\right)\]</span></p>
+<p><span class="math display">\[V_{3}=\left(\begin{array}{cc} 
+1\\
+2\\
+1
+\end{array}\right)\]</span></p>
+<p><span class="math inline">\(v_{1},v{2},v{3}\)</span> vectores propios de <span class="math inline">\(A_{2}\)</span></p>
+<p><span class="math display">\[C=\left(\begin{array}{cc} 
+-1 &amp; 1 &amp; 1\\
+4 &amp; -1 &amp; 2\\
+1 &amp; -1 &amp; 1
+\end{array}\right)\]</span></p>
+<p>Calcular <span class="math inline">\(C^{-1}A_{2}C\)</span></p>
+<pre class="r"><code>A2</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1   -1    4
+## [2,]    3    2   -1
+## [3,]    2    1   -1</code></pre>
+<pre class="r"><code>C &lt;- matrix(c(-1,1,1,4,-1,2,1,-1,1), 3, 3, TRUE)
+C_inv &lt;- solve(C)
+round(C_inv %*% A2 %*% C)</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    0    0
+## [2,]    0   -2    0
+## [3,]    0    0    3</code></pre>
+<p>La matriz resultante nos da los valores propios de <span class="math inline">\(A_{2}\)</span> en su diagonal</p>
 </div>
 
 

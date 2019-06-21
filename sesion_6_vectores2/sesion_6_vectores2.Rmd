@@ -46,5 +46,152 @@ y <- matrix(
 
 y
 
+# encontrar vectores ld en la martriz
 findDepMat(y)
 ```
+
+## Ej2 - Como saber si los vectores de una matriz son li o ld
+
+```{r}
+m  <- matrix(c(1,2,0,-2,-2,1,3,0,7), nrow = 3, ncol = 3, byrow = TRUE)
+# Calcular cuantas columnas son li, calula por columnas
+pracma::Rank(m)
+#Otra forma, calculando el determinante, si es diferente de cero las columnas son li
+det(m)
+# Otra forma, haciendo la solucion del sistema
+rref(m)
+```
+
+## Ej3 Verifique si los vectores:
+
+$$m=\left(\begin{array}{cc} 
+1\\
+3\\
+11
+\end{array}\right)$$
+
+$$m=\left(\begin{array}{cc} 
+-3\\
+0\\
+-6
+\end{array}\right)$$
+
+$$m=\left(\begin{array}{cc} 
+0\\
+4\\
+12
+\end{array}\right)$$
+
+Son li o ld
+
+```{r}
+m <- matrix(c(1,-3,0,3,0,4,11,-6,12), nrow = 3, ncol = 3, byrow = TRUE)
+pracma::Rank(m)
+det(m)
+rref(m)
+# Si retorna una lista y una sugerencia para remover, es ld
+findLinearCombos(m)
+```
+Es ld
+
+## Ej4
+
+```{r}
+m <- matrix(c(1,2,2,5,4,-3), 3, 2, TRUE)
+m
+Rank(m)
+```
+Es li
+
+## Valores y vectores propios
+
+```{r}
+A <- matrix(c(10,-18,6,-11), 2, 2, TRUE)
+v1 <- matrix(c(2,1), 2, 1, TRUE)
+v2 <- matrix(c(3,2), 2, 1, TRUE)
+e1 <- 1
+e2 <- -2
+
+a <- A%*%v1
+a
+# Es igual a
+b <- e1*v1
+b
+all.equal(a,b)
+
+c <- A%*%v2
+c
+#Es igual a 
+d <- e2*v2
+d
+all.equal(c,d)
+
+#Encontrar valores propios y vectores propios (autovalores, o valores caracteristicos)
+eig(A) #vector de valores propios del paquete pragma
+values <- eigen(A)
+fractions(values$vectors)#
+```
+
+## Ej calcule los valores propios de
+
+$$A_{1}=\left(\begin{array}{cc} 
+2 & 5 & 6\\
+0 & -3 & 2\\
+0 & 0 & 5
+\end{array}\right)$$
+
+```{r}
+A1 = matrix(c(2,5,6,0,-3,2,0,0,5), 3, 3, TRUE)
+eigen(A1)
+```
+Los valores propios de una matriz triangular, es su diagonal
+
+## Ej2 calcule los valores propios de
+
+$$A_{2}=\left(\begin{array}{cc} 
+1 & -1 & 4\\
+3 & -2 & -1\\
+2 & 1 & 1
+\end{array}\right)$$
+
+```{r}
+A2 <- matrix(c(1,-1,4,3,2,-1,2,1,-1), 3, 3, TRUE)
+eigen(A2)
+```
+## Sean 
+$$V_{1}=\left(\begin{array}{cc} 
+-1\\
+4\\
+1
+\end{array}\right)$$
+
+$$V_{2}=\left(\begin{array}{cc} 
+1\\
+-1\\
+-1
+\end{array}\right)$$
+
+$$V_{3}=\left(\begin{array}{cc} 
+1\\
+2\\
+1
+\end{array}\right)$$
+
+$v_{1},v{2},v{3}$ vectores propios de $A_{2}$
+
+$$C=\left(\begin{array}{cc} 
+-1 & 1 & 1\\
+4 & -1 & 2\\
+1 & -1 & 1
+\end{array}\right)$$
+
+Calcular $C^{-1}A_{2}C$
+
+```{r}
+A2
+C <- matrix(c(-1,1,1,4,-1,2,1,-1,1), 3, 3, TRUE)
+C_inv <- solve(C)
+round(C_inv %*% A2 %*% C)
+```
+
+La matriz resultante nos da los valores propios de $A_{2}$ en su diagonal
