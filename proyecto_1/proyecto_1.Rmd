@@ -20,6 +20,8 @@ library(mosaic)
 library(MASS)
 ```
 
+<hr>
+
 ### I Parte
 
 \
@@ -63,10 +65,6 @@ Por lo tanto $0<=z<=\frac{1}{2}$
 
 \
 
-|        **b)** Determine la cantidad de cada tipo de cafe suponiendo que el dueño decide usar $\frac{1}{8}kg$ de cafe brasileño.
-
-\
-
 Sea $x$ kg de cafe colombiano, $y$ kg de cafe brasileño y $z$ kg de cafe de Kenia.
 \
 Si tenemos:
@@ -78,13 +76,14 @@ $y+\frac{z}{2}=\frac{1}{4}$
 
 Entonces sustituyendo $\frac{1}{8}$ por ($y$), nos da que la cantidad de cafe colombiano ($x$) es de $\frac{5}{8}$ y la cantidad de cafe de Kenia ($z$), es de $\frac{1}{4}$.
 
-\
+
+<hr>
 
 ### II Parte
 
 \
 
-**1.** Imagine que en un sector determinado de una ciudad, se hizo u estudio sobre el fluido de tránsito de las calles y las avenidas. Supongamos que en un sector de estas vías se pretende realizar reparaciones en el sistema de alcantarillado, por lo que habrá tránsito regulado. En la figura siguiente se muestra el comportamiento de estas vías en las horas pico. Suponiendo que los trabajos de reparación se realizarán en la calle $x5$, entonces los oficiales de tránsito pueden hasta cierto punto, controlar el flujo de vehículos reajustando los semáforos, colocando policías en los cruces claves o cerrando la calle crítica al tránsito de vehículos. Note que si se disminuye el tránsito en $x5$, aumentará instantáneamente el flujo de tránsito en las otras calles aledañas. Dadas las circunstancias, minimice el tránsito en $x5$ de manera que no ocasione congestionamientos en las otras calles.
+**1.** Imagine que en un sector determinado de una ciudad, se hizo u estudio sobre el fluido de tránsito de las calles y las avenidas. Supongamos que en un sector de estas vías se pretende realizar reparaciones en el sistema de alcantarillado, por lo que habrá tránsito regulado. En la figura siguiente se muestra el comportamiento de estas vías en las horas pico. Suponiendo que los trabajos de reparación se realizarán en la calle $x_5$, entonces los oficiales de tránsito pueden hasta cierto punto, controlar el flujo de vehículos reajustando los semáforos, colocando policías en los cruces claves o cerrando la calle crítica al tránsito de vehículos. Note que si se disminuye el tránsito en $x_5$, aumentará instantáneamente el flujo de tránsito en las otras calles aledañas. Dadas las circunstancias, minimice el tránsito en $x_5$ de manera que no ocasione congestionamientos en las otras calles.
 
 <center>![](figura1.PNG)</center>
 
@@ -92,49 +91,49 @@ Entonces sustituyendo $\frac{1}{8}$ por ($y$), nos da que la cantidad de cafe co
 
 **A.** 
 
-|        $x1+x7=500+800$
+|        $x_1+x_7=500+800$
 
-|        $x1+x7=1300$
+|        $x_1+x_7=1300$
 
 \
 
 **B.** 
 
-|        $x1+x6=200+x2$
+|        $x_1+x_6=200+x2$
 
-|        $x1-x2+x6=200$
+|        $x_1-x_2+x_6=200$
 
 \
 
 **C.** 
 
-|        $x2+100=x5+300$
+|        $x_2+100=x_5+300$
 
-|        $x2-x5=200$
+|        $x_2-x_5=200$
 
 \
 
 **D.** 
 
-|        $x5+100=x4+500$
+|        $x_5+100=x_4+500$
 
-|        $-x4+x5=400$
+|        $-x_4+x_5=400$
 
 \
 
 **E.** 
 
-|        $x4+100=x6+x3$
+|        $x_4+100=x_6+x3$
 
-|        $x3-x4+x6=100$
+|        $x_3-x_4+x_6=100$
 
 \
 
 **F.** 
 
-|        $x3+x7=400+200$
+|        $x_3+x_7=400+200$
 
-|        $x3+x7=600$
+|        $x_3+x_7=600$
 
 \
 
@@ -157,35 +156,35 @@ rref(sistema)
 
 **(1)**
 
-|        $x1+x7=1300$
+|        $x_1+x_7=1300$
 
 \
 
 **(2)**
 
-|        $x2-x6+x7=1100$
+|        $x_2-x_6+x_7=1100$
 
 \
 
 **(3)**
 
-|        $x3+x7=600$
+|        $x_3+x_7=600$
 
 \
 
 **(4)**
 
-|        $x4-x6+x7=500$
+|        $x_4-x_6+x_7=500$
 
 \
 
 **(5)**
 
-|        $x5-x6+x7=900$
+|        $x_5-x_6+x_7=900$
 
 \
 
-**Conclusiones: ** de **(2)**, **(4)** y **(5)** se concluye que el valor minimo que puede tomar $x6-x7$ para minimizar $x5$, es $x6-x7=500$, por tanto $x4=0$
+**Conclusiones: ** de **(2)**, **(4)** y **(5)** se concluye que el valor minimo que puede tomar $-x_6+x_7$ para minimizar $x5$, es $-x_6+x_7=500$, por tanto $x_4=0$
 
 **Luego:**
 
@@ -221,13 +220,13 @@ Ademas
 
 \
 
-|        $-x6+x7=500$
+|        $-x_6+x_7=500$
 
-|        $x7=500+x6$
+|        $x_7=500+x_6$
 
 \
 
-Por lo tanto el minimo valor para $x7=500$, cuando $x6=0$ y el maximo valor se obtiene de **(3)**, es decir $x7=600$, asi $500<=x7<=600$
+Por lo tanto el minimo valor para $x_7=500$, cuando $x_6=0$ y el maximo valor se obtiene de **(3)**, es decir $x_7=600$, asi $500<=x_7<=600$
 
 \
 
@@ -235,10 +234,10 @@ Asi mismo:
 
 \
 
-|        $0<=x6<=100$
+|        $0<=x_6<=100$
 
-|        $700<=x1<=800$
+|        $700<=x_1<=800$
 
-|        $0<=x3<=100$
+|        $0<=x_3<=100$
 
 \
