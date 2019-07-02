@@ -19,6 +19,8 @@ library(visdat)
 library(corrr) 
 library(corrplot)
 library(FactoMineR)
+library(ggplot2)
+library(factoextra)
 ```
 
 <hr>
@@ -98,3 +100,28 @@ varmalrep
 plot(pca_alg, axes=c(1, 2), choix="ind", col.ind="red", new.plot=TRUE, select="cos2 0.2")
 plot(pca_alg, axes=c(1, 2), choix="var", col.var="blue",new.plot=TRUE, select="cos2 0.55")
 ```
+
+```{r}
+PCA <- prcomp(algoritmos, scale = TRUE)
+
+pca_alg.hcpc <- HCPC(pca_alg, nb.clust=-1, min=2, max=3)
+plot(pca_alg.hcpc, axes = 3:4)
+
+fviz_pca_ind(PCA,
+             col.ind = "cos2", # Color by the quality of representation
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = FALSE     # Avoid text overlapping
+             )
+
+fviz_pca_var(PCA,
+             col.var = "cos2", # Color by the quality of representation
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = FALSE     # Avoid text overlapping
+             )
+
+fviz_pca_biplot(PCA, repel = FALSE,
+                col.var = "#2E9FDF", # Variables color
+                col.ind = "#696969"  # Individuals color
+                )
+```
+
