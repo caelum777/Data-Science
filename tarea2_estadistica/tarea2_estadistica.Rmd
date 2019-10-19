@@ -77,17 +77,25 @@ histograma <- function(TabFreq, palette="RedOr"){
     points(x = TabFreq.bar, y = TabFreq$Freq, col = "red")
 }
 
+greater_than_freq <- function(frequencys){
+  freq <- c(sum(frequencys))
+  for (i in head(frequencys, -1)) {
+    freq <- c(freq, i)
+  }
+  freq <- round(freq / freq[1], 4)
+  return(freq)
+}
+
 ojiva <- function(TabFreq, which = 1){
-    if (which == 2) 
-        {
-            #TabFrec$MarClas <- rev(TabFrec$MarClas)
-            TabFreq$RelAc <- rev(TabFreq$RelAc)
-        }  #Si which = 2, calcula Ojiva menor que
+    RelAc <- TabFreq$RelAc
+    if (which == 2) {
+      RelAc <- greater_than_freq(TabFreq$Freq)
+    }  #Si which = 2, calcula Ojiva menor que
     par(mfrow = c(1, 2))
     # Generando Ojiva
-    plot(TabFreq$MarClas, TabFreq$RelAc, col = "red", ylab = "Frecuencias Relativas Acumuladas", 
+    plot(TabFreq$MarClas, RelAc, col = "red", ylab = "Frecuencias Relativas Acumuladas", 
         xlab = "Datos")
-    lines(TabFreq$MarClas, TabFreq$RelAc, col = "red")
+    lines(TabFreq$MarClas, RelAc, col = "red")
     title(main = "Ojiva", col.main = "darkgreen")
 }
 ```
@@ -95,6 +103,7 @@ ojiva <- function(TabFreq, which = 1){
 **1.** Realice una tabla de datos agrupados para la variable Presión/mbar usando Scott o Freedman para el número de categorías. 
 ```{r}
 SCOTT <- 2
+mbar <- huracanes$Presion.mbar
 tab_frec <- tabla_frecuencias(mbar, which = SCOTT)
 print(tab_frec)
 ```
@@ -121,9 +130,9 @@ mode
 **3.** Genere el histograma para los datos agrupados junto con su respectivo polígono de frecuencias, así como los gráficos de ojiva “mayor que” y “menor qué”. Para este último, se requiere hacer una modificación en el script trabajado en clases. 
 
 ```{r}
-histograma(TabFreq)
-ojiva(TabFreq)
-ojiva(TabFreq, which = 2)
+histograma(tab_frec)
+ojiva(tab_frec)
+ojiva(tab_frec, which = 2)
 ```
 
 **4.** Para el gráfico de Histograma, escoja una secuencia de colores de su agrado, usando la instrucción col = sequential_hcl(k, "Purples 3").
@@ -131,5 +140,5 @@ La instrucción anterior lo que hace es pasarle al gráfico a través del parám
 
 ```{r}
 # Se envia por parametro el nombre de la paleta de colores deseada
-histograma(TabFreq, palette="Purples 3")
+histograma(tab_frec, palette="Purples 3")
 ```
