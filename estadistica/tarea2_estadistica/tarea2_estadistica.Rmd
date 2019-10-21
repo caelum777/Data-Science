@@ -79,8 +79,10 @@ histograma <- function(TabFreq, palette="RedOr"){
 
 greater_than_freq <- function(frequencys){
   freq <- c(sum(frequencys))
+  current <- freq[1]
   for (i in head(frequencys, -1)) {
-    freq <- c(freq, i)
+    current <- current - i
+    freq <- c(freq, current)
   }
   freq <- round(freq / freq[1], 4)
   return(freq)
@@ -90,6 +92,7 @@ ojiva <- function(TabFreq, which = 1){
     RelAc <- TabFreq$RelAc
     if (which == 2) {
       RelAc <- greater_than_freq(TabFreq$Freq)
+      print(RelAc)
     }  #Si which = 2, calcula Ojiva menor que
     par(mfrow = c(1, 2))
     # Generando Ojiva
