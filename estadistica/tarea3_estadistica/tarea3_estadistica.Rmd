@@ -1,0 +1,68 @@
+---
+title: "tarea3"
+author: "Andres Gonzalez"
+date: "31/10/2019"
+output: html_document
+---
+
+``` {r echo = FALSE, message = FALSE}
+library(datos)
+library(nycflights13)
+library(ggplot2)
+```
+
+## Parte I
+
+Cargue el paquete 𝑑𝑎𝑡𝑜𝑠 en R el cual contiene varias bases de datos que pueden ser
+utilizadas para el trabajo con los temas del curso. Trabaje con los datos de 𝑣𝑢𝑒𝑙𝑜𝑠 y realice
+lo siguiente:
+
+**a.** Brevemente explique de qué tratan los datos
+
+Los datos contienen informacion sobre vuelos realizados en el año 2013 por diferentes aerolineas.
+Además contiene horarios de salida y llegada (programada y real), distancia, tiempo de vuelo, fecha, origen y destino.
+
+```{r}
+summary(vuelos)
+head(vuelos)
+```
+
+**b.** Realice un gráfico de barras verticales con alguna de las variables presentes en el
+dataset vuelos. Esta variable debe cumplir los requerimientos explicados en clase
+
+```{r}
+#vuelos$mes <- format(vuelos$fecha_hora, format="%B")
+#ggplot(data = vuelos) +
+#  geom_bar(mapping = aes(x = horario_salida))
+
+labs <- c("12:01AM-5AM", "6AM-10AM", "11AM-3PM", "4PM-8PM", "9PM-12AM")
+
+vuelos$horario_salida_grupos <- cut(vuelos$horario_salida, breaks = c(seq(1, 2001, by = 500), Inf), labels = labs, right = FALSE)
+
+ggplot(data = vuelos) +
+  geom_bar(mapping = aes(x = horario_salida_grupos)) +
+  labs(title = "Numero de Vuelos por Grupos de Horarios de Salida",
+       subtitle = "Vuelos 2013",
+       x = "Grupos de Horarios de Salida",
+       y = "cantidad")
+```
+
+**c.** Realice un gráfico de barras horizontal con alguna de las variables. Al igual que el
+caso anterior, debe elegir una variable que se ajuste a los requerimientos discutidos
+
+```{r}
+ggplot(data = vuelos) +
+  geom_bar(mapping = aes(x = aerolinea)) +
+  coord_flip() +
+  labs(title = "Numero de Vuelos por Aerolinea",
+       subtitle = "Vuelos 2013",
+       x = "Aerolineas",
+       y = "cantidad")
+```
+
+en clase para este tipo de gráficos.
+**d.** Elija una de las variables y construya un gráfico de pastel. La variable debe tener las
+condiciones apropiadas.
+Tome en cuenta que para cada gráfico debe considerar las recomendaciones estudiadas en
+clases, las cuáles las pueden encontrar en la presentación. Para cada uno de los gráficos,
+haga una breve interpretación de lo observado.
