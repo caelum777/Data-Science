@@ -30,8 +30,10 @@ head(vuelos)
 **b.** Realice un gráfico de barras verticales con alguna de las variables presentes en el
 dataset vuelos. Esta variable debe cumplir los requerimientos explicados en clase
 
+En el sigueinte grafico se observa que durante horas de la mañana entre 12:01AM a 5AM la cantidad de vuelos es bastante baja
+
 ```{r}
-#vuelos$mes <- format(vuelos$fecha_hora, format="%B")
+vuelos$mes <- format(vuelos$fecha_hora, format="%B")
 #ggplot(data = vuelos) +
 #  geom_bar(mapping = aes(x = horario_salida))
 
@@ -48,7 +50,9 @@ ggplot(data = vuelos) +
 ```
 
 **c.** Realice un gráfico de barras horizontal con alguna de las variables. Al igual que el
-caso anterior, debe elegir una variable que se ajuste a los requerimientos discutidos
+caso anterior, debe elegir una variable que se ajuste a los requerimientos discutidos en clase para este tipo de gráficos.
+
+En el siguiente grafico se observa 6 aerolineas con muy pocos vuelos, y podemos ver que la aerolinea UA es la que realiza más vuelos
 
 ```{r}
 ggplot(data = vuelos) +
@@ -60,9 +64,157 @@ ggplot(data = vuelos) +
        y = "cantidad")
 ```
 
-en clase para este tipo de gráficos.
 **d.** Elija una de las variables y construya un gráfico de pastel. La variable debe tener las
 condiciones apropiadas.
 Tome en cuenta que para cada gráfico debe considerar las recomendaciones estudiadas en
 clases, las cuáles las pueden encontrar en la presentación. Para cada uno de los gráficos,
 haga una breve interpretación de lo observado.
+
+En este grafico podemos notar que casi no hay diferencia entre la cantidad de vuelos y el origin del mismo
+
+```{r}
+vuelos_dat <- vuelos %>%
+  group_by(origen) %>% # agrupar todo por clase
+summarise(conteo = n())
+vuelos_dat
+
+count.data <- vuelos_dat %>%
+  arrange(desc(conteo)) %>%
+  mutate(porcent = round(conteo/sum(conteo)*100,1))
+count.data
+
+count.data <- count.data %>%
+  arrange(desc(porcent)) %>%
+  mutate(lab.ypos = cumsum(porcent) - 0.5*porcent)
+count.data
+
+```
+
+```{r}
+ggplot(count.data, aes(x = "", y = porcent, fill = origen)) +
+  geom_bar(width = 1, stat = "identity", color = "white") +
+  coord_polar("y", start = 0)+
+  geom_text(aes(y = lab.ypos, label = porcent), color = "white") +
+  theme_void() +
+  labs(title = "Porcentaje de Vuelos por Origen",
+       subtitle = "Vuelos 2013")
+```
+
+
+##II Parte
+
+**1.** Suponga que el 30% de los estudiantes del ITCR son mujeres. Si se toma una muestra de 10 mujeres al azar. 
+
+**a.** Escriba la fórmula de la distribución que modela esta situación (2pts)
+
+$$p=0.3$$
+$$q=0.7$$
+
+$$p(x)=\binom{n}{x}p^{x}q^{n-x}$$
+$$p(x)=\binom{10}{x}0.3^{x}0.7^{10-x}$$
+
+**b.** ¿Cuál es la probabilidad de que en la muestra haya al menos 4 mujeres?
+
+```{r}
+pbinom(3, size = 10, prob = 0.3, lower.tail = FALSE)
+```
+
+
+**c.** ¿Cuál es la probabilidad de que en la muestra haya más de 4 y a lo sumo 8 mujeres?
+
+```{r}
+#usando dbinom
+sum(dbinom(c(5,6,7,8), size = 10, prob = 0.3))
+
+#usando pbinom
+pbinom(8, size = 10, prob = 0.3) - pbinom(4, size = 10, prob = 0.3)
+```
+
+**d.** ¿Cuál es la probabilidad de que haya exactamente 5 mujeres en la muestra?
+
+```{r}
+dbinom(5, size = 10, prob = 0.3)
+```
+
+**e.** Determine la media y la desviación estándar que se esperaría ver en la muestra.
+
+```{r}
+media <- 10*0.3 
+varianza <- 10*0.3*0.7
+des.est <- round(sqrt(varianza), 4)
+sprintf("Media %s:", media)
+sprintf("Varianza %s:", varianza)
+sprintf("Desviacion Estandar %s:", des.est)
+```
+
+**2.** Constantemente, la gente que posee un vehículo vive quejándose de las fallas mecánicas
+que estos presentan, tanto, porque es un gasto tanto para sus bolsillos como por las
+implicaciones en la disponibilidad de uso.
+Popularmente, se tiene la creencia de que una persona podría olvidarse de este tipo de
+imprevistos si tuviese la capacidad de pago para adquirir un vehículo nuevo de agencia,
+situación que no es tan cierta. Suponga que en Costa Rica, la compañía de autos A debe
+hacer efectiva su garantía para algunos usuarios que adquirieron de agencia, uno de sus
+autos modelo X. Sabiendo que para el mes de enero pasado, disponía de 30 vehículos de
+dicho modelo X en sus agencias donde 3 de ellos venía con un desperfecto de fábrica y que
+durante ese mes logró vender 8 de esos autos, realice lo siguiente:
+
+**a.** Verifique que se cumple la condición para que sea hipergeométrica y escriba la ecuación de la distribución que modela esta situación
+ 
+ Se cumple que la probabilidad de éxito cambia en cada ensayo, esta enfocada a experimentos sin reemplazo y es una población finita.
+ 
+ $$p(x)=\frac{\binom{S}{x}\binom{N-S}{n-x}}{\binom{N}{n}}$$
+
+**b.** ¿Cuál es la probabilidad de que ninguno de los autos vendidos requiera la garantía durante el primer año?.
+
+```{r}
+dhyper(8, m = 27, n = 3, k = 8)
+```
+
+**c.** Determine la probabilidad de que al menos dos de los autos vendidos requiera hacer uso de la garantía.
+
+```{r}
+#usando dhyper
+sum(dhyper(c(6,7,8), m = 27, n = 3, k = 8))
+
+#usando phyper
+phyper(5, m = 27, n = 3, k = 8, lower.tail = FALSE)
+```
+
+*Media, varianza y Desviacion Estandar*
+
+```{r}
+media <- round((8*27)/30, 4)
+varianza <- round(((8*27)*(30-27)*(30-8))/(30**2*(30-1)), 4)
+des.est <- round(sqrt(varianza), 4)
+sprintf("Media %s:", media)
+sprintf("Varianza %s:", varianza)
+sprintf("Desviacion Estandar %s:", des.est)
+```
+
+**3.** Un juego consiste en girar una ruleta que tiene 3 opciones de premio y 13 opciones no premio. Una persona que juegue la ruleta ganará si al girarla obtiene la opción “premio” antes del cuarto intento.
+
+**a.** Escriba la fórmula de la distribución que modela esta situación
+
+$$g(y;p)=p(y)=pq^{y-1}, y = 1,2,3,...$$
+
+**b.** Calcule la probabilidad de si una persona gane en una jugada en la ruleta.
+
+```{r}
+#usando dgeom
+sum(dgeom(c(0, 1, 2), prob = 0.1875))
+
+#usando pgeom
+pgeom(2, prob = 0.1875)
+```
+
+*Media, varianza y Desviacion Estandar*
+
+```{r}
+media <- round(1/0.1875, 4)
+varianza <- round((1-0.1875)/0.1875**2, 4)
+des.est <- round(sqrt(varianza), 4)
+sprintf("Media %s:", media)
+sprintf("Varianza %s:", varianza)
+sprintf("Desviacion Estandar %s:", des.est)
+```
+
