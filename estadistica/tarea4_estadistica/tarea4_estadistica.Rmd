@@ -1,0 +1,30 @@
+---
+title: "tarea4"
+author: "Andres Gonzalez"
+date: "12/11/2019"
+output: html_document
+---
+
+
+**1.** Un juego consiste en gira runa ruleta que tiene 3 opciones de premio y 13 opciones no premio. Una persona que juegue la ruleta ganará si al girarla obtiene la opción “premio” antes del cuarto intento. Calcule la probabilidad de si una persona juega la ruleta 12 veces, esta gane premio en más de la mitad de los intentos.
+
+
+```{r}
+prob <- pgeom(2,0.1875)
+round(pbinom(6, 12, prob, lower.tail = FALSE), 5)
+```
+
+**2.** Suponga que en cada partido que disputa Keylor Navas recibe 10 remates directos, en cada remate tiene una probabilidad de 0.73 de detenerlo. El entrenador del equipo de Keylor considera que un marcador atípico es en el que reciben más de dos goles. Calcule la probabilidad de que, en un torneo de 15 partidos, el primer marcador atípico se tenga después del octavo partido.
+
+
+```{r}
+prob <- pbinom(2, 10, 0.27, lower.tail = FALSE)
+pgeom(14, prob = prob) - pgeom(7, prob = prob)
+```
+
+**3.** El número de cierres totales de la carretera de circunvalación a la altura de la rotonda de Garantías Sociales, siguen una distribución Poisson con media 2.4 cierres por día. Un día se considera como de tránsito pesado cuando la carretera debe cerrarse totalmente en más de 4 cuatro ocasiones. Durante los próximos 10 días, ¿cuál es la probabilidad de tener el primer día de tránsito pesado en alguno de los primeros 5 días?
+
+```{r}
+prob <- ppois(4, 2.4, lower.tail = FALSE)
+pgeom(4, prob = prob)
+```

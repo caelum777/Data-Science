@@ -9,6 +9,7 @@ output: html_document
 library(datos)
 library(nycflights13)
 library(ggplot2)
+library(tidyverse)
 ```
 
 ## Parte I
@@ -101,7 +102,7 @@ ggplot(count.data, aes(x = "", y = porcent, fill = origen)) +
 ```
 
 
-##II Parte
+## II Parte
 
 **1.** Suponga que el 30% de los estudiantes del ITCR son mujeres. Si se toma una muestra de 10 mujeres al azar. 
 
@@ -116,7 +117,13 @@ $$p(x)=\binom{10}{x}0.3^{x}0.7^{10-x}$$
 **b.** ¿Cuál es la probabilidad de que en la muestra haya al menos 4 mujeres?
 
 ```{r}
+#usando pbinom
 pbinom(3, size = 10, prob = 0.3, lower.tail = FALSE)
+
+#usando dbinom
+prob <- dbinom(c(4:10), size=10, prob=0.3)
+plot(c(4:10), prob, type="h", xlab="Exitos", ylab="f(x) Probabilidad", main="Distribucion Binomial", col=terrain.colors(4))
+sum(prob)
 ```
 
 
@@ -124,7 +131,9 @@ pbinom(3, size = 10, prob = 0.3, lower.tail = FALSE)
 
 ```{r}
 #usando dbinom
-sum(dbinom(c(5,6,7,8), size = 10, prob = 0.3))
+prob <- dbinom(c(5:8), size = 10, prob = 0.3)
+plot(c(5:8), prob, type="h", xlab="Exitos", ylab="f(x) Probabilidad", main="Distribucion Binomial", col=terrain.colors(4))
+sum(prob)
 
 #usando pbinom
 pbinom(8, size = 10, prob = 0.3) - pbinom(4, size = 10, prob = 0.3)
@@ -133,7 +142,9 @@ pbinom(8, size = 10, prob = 0.3) - pbinom(4, size = 10, prob = 0.3)
 **d.** ¿Cuál es la probabilidad de que haya exactamente 5 mujeres en la muestra?
 
 ```{r}
-dbinom(5, size = 10, prob = 0.3)
+prob <- dbinom(5, size = 10, prob = 0.3)
+prob
+plot(5, prob, type="h", xlab="Exitos", ylab="f(x) Probabilidad", main="Distribucion Binomial", col=terrain.colors(4))
 ```
 
 **e.** Determine la media y la desviación estándar que se esperaría ver en la muestra.
@@ -167,14 +178,18 @@ durante ese mes logró vender 8 de esos autos, realice lo siguiente:
 **b.** ¿Cuál es la probabilidad de que ninguno de los autos vendidos requiera la garantía durante el primer año?.
 
 ```{r}
-dhyper(8, m = 27, n = 3, k = 8)
+prob <- dhyper(8, m = 27, n = 3, k = 8)
+prob
+plot(8, prob, type="h", xlab="Exitos", ylab="f(x) Probabilidad", main="Distribucion Hipergeometrica", col=terrain.colors(4))
 ```
 
 **c.** Determine la probabilidad de que al menos dos de los autos vendidos requiera hacer uso de la garantía.
 
 ```{r}
 #usando dhyper
-sum(dhyper(c(6,7,8), m = 27, n = 3, k = 8))
+prob <- dhyper(c(6:8), m = 27, n = 3, k = 8)
+plot(c(6:8), prob, type="h", xlab="Exitos", ylab="f(x) Probabilidad", main="Distribucion Hipergeometrica", col=terrain.colors(4))
+sum(prob)
 
 #usando phyper
 phyper(5, m = 27, n = 3, k = 8, lower.tail = FALSE)
@@ -201,7 +216,9 @@ $$g(y;p)=p(y)=pq^{y-1}, y = 1,2,3,...$$
 
 ```{r}
 #usando dgeom
-sum(dgeom(c(0, 1, 2), prob = 0.1875))
+prob <- dgeom(c(0:2), prob = 0.1875)
+plot(c(0:2), prob, type="h", xlab="Exitos", ylab="f(x) Probabilidad", main="Distribucion Geometrica", col=terrain.colors(4))
+sum(prob)
 
 #usando pgeom
 pgeom(2, prob = 0.1875)
