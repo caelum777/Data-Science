@@ -1,0 +1,178 @@
+---
+title: "tarea5"
+author: "Andres Gonzalez"
+date: "18/11/2019"
+output: html_document
+---
+
+``` {r echo = FALSE, message = FALSE}
+library(itsmr)
+library(forecast)
+```
+
+
+## I Parte
+
+**1.** Para los datos “deaths"(USA accidental deaths from 1973 to 1978) del paquete itsmr realice 5 predicciones con Box-Jenkins usando un SARIMA(p,d,q)(P,D,Q) (apóyese en la función auto.arima) con periodo 12 Porqué periodo 12? 
+
+**Respuesta** Se utiliza 12 en el periodo, basado en los calculos basados en las frecuencias de la serie y en lo que nos confirma auto.arima
+
+```{r}
+deaths_serie <- ts(deaths, start=c(1973, 1), freq=12)
+
+plot.ts(deaths_serie)
+deaths_period <- spec.pgram(deaths_serie, log = "no")
+pos <- order(deaths_period$spec, deaths_period$freq, decreasing = TRUE) 
+pos[1:3]
+
+# La posición 1 en order se debe ignorar
+max1<-deaths_period$freq[6]
+max1
+
+max2<-deaths_period$freq[12]
+max2
+
+max3<-deaths_period$freq[1]
+max3
+
+# El primer "pico" ocurre en: max1
+abline(v=max1, lty="dotted",col="red")
+# Esto implica que el periodo es:
+# Donde 12 es la frecuencia de la Serie
+periodo1 <- 12/max1
+periodo1
+
+# El segundo "pico" ocurre en: max2
+abline(v=max2, lty="dotted",col="blue")
+# Esto implica que el periodo es:
+periodo2 <- 12/max2
+periodo2
+
+# El tercer "pico" ocurre en: max3
+abline(v=max3, lty="dotted",col="magenta")
+
+# Esto implica que el periodo es:
+periodo3 <- 12/max3
+periodo3
+
+
+auto.arima(deaths_serie)
+```
+
+```{r}
+my_sarima <- function(p, d, q, P, D, Q, period, col) {
+  fit<-arima(deaths_serie, order=c(p,d,q),seasonal=list(order=c(P,D,Q), period=period))
+  LH.pred<-predict(fit,n.ahead=12)
+  LH.pred
+  layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
+  plot(deaths_serie, xlim=c(1973,1980), ylim=c(6000, 12000), type="o")
+  lines(LH.pred$pred, col=col, type="o")
+  lines(LH.pred$pred+3*LH.pred$se, col=col, lty=3, type="o")
+  lines(LH.pred$pred-3*LH.pred$se, col=col, lty=3, type="o")
+  acf(deaths_serie, main="Autocorrelación Simple", col="black", ylim=c(-1,1))
+  pacf(deaths_serie, main="Autocorrelación Parcial", col="black", ylim=c(-1,1))
+}
+```
+
+```{r}
+#Prediccion 1
+my_sarima(0,1,1,0,1,1,12, "orange")
+```
+
+```{r}
+#Prediccion 2
+my_sarima(1,1,1,1,1,1,12,"red")
+```
+
+```{r}
+#Prediccion 3
+my_sarima(1,1,1,2,2,2,12,"green")
+```
+
+```{r}
+#Prediccion 4
+my_sarima(1,0,0,1,0,0,12,"purple")
+```
+
+```{r}
+#Prediccion 5
+my_sarima(3,1,3,1,3,1,12,"blue")
+```
+
+**2.** Para el Caj101 realice una predicción con Box-Jenkins usando un SARIMA(p,d,q)(P,D,Q) (apóyese en la función auto.arima) con el periodo más adecuado. 
+
+```{r}
+caj101 <- data.frame(Col=scan('cajero101.csv', what=double(), sep=';', dec="."))
+caj101_serie <- ts(caj101,start=c(2008, 1), freq=365)
+period101 <- spec.pgram(caj101_serie, log = "no")
+pos <- order(period101$spec, period101$freq,decreasing = TRUE) 
+pos[1:3]
+# La posición 1 en order se debe ignorar
+max1<-period101$freq[101]
+max1
+
+max2<-period101$freq[439]
+max2
+
+max3<-period101$freq[220]
+max3
+
+# El primer "pico" ocurre en: max1
+abline(v=max1, lty="dotted",col="red")
+# Esto implica que el periodo es:
+# Donde 365 es la frecuencia de la Serie
+periodo1 <- 365/max1
+periodo1
+
+# El segundo "pico" ocurre en: max2
+abline(v=max2, lty="dotted",col="blue")
+# Esto implica que el periodo es:
+periodo2 <- 365/max2
+periodo2
+
+# El tercer "pico" ocurre en: max3
+abline(v=max3, lty="dotted",col="magenta")
+
+# Esto implica que el periodo es:
+periodo3 <- 365/max3
+periodo3
+
+
+auto.arima(caj101_serie)
+```
+
+```{r}
+# SARIMA para caj101 usando p, d, q => 5, 1, 1 sugerido por auto.arima
+# Usamos periodo 15 basado en los calculos anteriores
+fit <- arima(caj101_serie,order=c(5,1,1),seasonal=list(order=c(1,1,1),period=15))
+LH.pred <- predict(fit,n.ahead=96)
+layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
+plot(caj101_serie,xlim=c(2008.0,2012.5),type = "o")
+lines(LH.pred$pred,col="green",type = "o")
+lines(LH.pred$pred+2*LH.pred$se,col="green",lty=3,type = "o")
+lines(LH.pred$pred-2*LH.pred$se,col="green",lty=3,type = "o")
+acf(caj101_serie, main="Autocorrelación Simple",col="black",ylim=c(-1,1))
+pacf(caj101_serie,main="Autocorrelación Parcial",col="black",ylim=c(-1,1))
+```
+
+## II Parte
+
+**3.** Genere una modelo de serie de tiempo para los dos casos anteriores, pero usando el método de Holt-Winter.
+
+```{r}
+# Holt-Winter para caso de Deaths
+plot(deaths_serie, type="o")
+res <- HoltWinters(deaths_serie)
+plot(res)
+plot(deaths_serie,xlim=c(1973, 1980))
+lines(predict(res,n.ahead=12),col=2)
+```
+
+```{r}
+# Holt-Winter para caso de Cajero 101
+plot(caj101_serie, type="o")
+res <- HoltWinters(caj101_serie)
+plot(res)
+plot(caj101_serie,xlim=c(2008.0,2012.5))
+lines(predict(res,n.ahead=96),col=2)
+```
